@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  font-size: 10pt;
+  background-repeat: no-repeat;
+  background-position: center 10%;
+  background-size: 90% auto;
+}
+
+a {
+  color: #117;
+  text-decoration: none;
+}
+
+#main {
+  padding-top: 15%;
+  width: 60%;
+  margin: 0 auto;
+}
+
+#main div {
+  padding-bottom: 9px;
+}

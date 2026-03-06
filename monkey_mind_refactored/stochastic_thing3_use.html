@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--
+Stochastic Texts reimplementation
+copyright (c) 2014 Nick Montfort <nickm@nickm.com>
+based on a 1959 program (Stochastische Texte) by Theo Lutz
+the text is a translation of Lutz's German text by Helen MacCormack
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+-->
+<title>Stochastic Texts</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/presentation.css">
+</head>
+
+<body>
+<div id="main"></div>
+
+<script src="js/monkey-mind.js"></script>
+<script>
+  MonkeyMind.init({
+    subjects: [' ', ' ', ' ', ' ', ' ', ' ','you are my','you are not my', 'we are our', 'we are not our','I am your' ,'I am not your', 'he was my' ,'he was not my',
+                'she was my' , 'she was not my' , 'she was your' , 'I am not ' , 'you are completely ', 'we were not your' , 'we were my' , 'we were not my'],
+    predicates: [' ' , ' ', ' ', ' ', ' ', ' right ' , ' wrong ', ' gift' , 'silence', 'strength', 'value', 'one', 'meadow' , 'dream' , 'marrow', 'supply', 'horses', 'breath' , 'heart' , 'road' , 'novelty', 'quiet', 'distance', 'yellow bird', 'forsythia', 'darkness', 'freedom',
+                  'expense', 'age', 'anger' , 'moth'],
+    conjunctions: [' ' ,' and ', ' or ', ' but ' , ' therefore ' , ' (please listen) ', ' (I hear you) ', ' (please don\'t) '],
+    operators: ['', '', '', ''],
+    interval: 2000,
+  });
+</script>
+</body>
+</html>

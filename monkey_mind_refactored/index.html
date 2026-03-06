@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Monkey Mind</title>
+<style>
+  iframe { border: none; }
+  #overlay {
+    position: fixed; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 16px;
+    background: rgba(0,0,0,0.7); color: #fff; font-size: 24px;
+    cursor: pointer; z-index: 100;
+  }
+  #overlay input {
+    font-size: 14px; padding: 8px 12px; width: 320px;
+    border: 1px solid #666; border-radius: 4px; background: #222; color: #fff;
+    text-align: center;
+  }
+  #overlay .hint { font-size: 12px; color: #999; }
+</style>
+</head>
+
+<body>
+
+<div id="overlay">
+  <div>click to listen</div>
+  <input id="api-key" type="password" placeholder="OpenAI API key (optional)">
+  <div class="hint">Leave blank for browser voices, or enter key for natural AI voices</div>
+  <div class="hint" id="key-status"></div>
+</div>
+
+<div style="margin-left:10%">
+  <h2>Monkey Mind</h2>
+  <button id="mute-btn" style="display:none; cursor:pointer; font-size:14px; padding:4px 12px;">stop listening</button>
+  <button id="voice-btn" style="display:none; cursor:pointer; font-size:14px; padding:4px 12px;">switch to AI voices</button>
+</div>
+
+<div style="display:inline-block; width:45%; vertical-align:top;">
+  <iframe id="him" src="stochastic_thing2.html" width="100%" height="700"></iframe>
+  <div class="char-controls" style="display:none; text-align:center; padding:4px 0;">
+    <button id="him-btn" style="cursor:pointer; font-size:14px; padding:4px 12px;">silence him</button>
+  </div>
+</div>
+<div style="display:inline-block; width:45%; vertical-align:top;">
+  <iframe id="her" src="stochastic_thing3.html" width="100%" height="700"></iframe>
+  <div class="char-controls" style="display:none; text-align:center; padding:4px 0;">
+    <button id="her-btn" style="cursor:pointer; font-size:14px; padding:4px 12px;">silence her</button>
+  </div>
+</div>
+
+<script>
+  var listening = false;
+  var storedApiKey = localStorage.getItem('mm_apikey') || null;
+  var useAI = false;
+  var hearEnabled = { him: true, her: true };
+  var overlay = document.getElementById('overlay');
+  var muteBtn = document.getElementById('mute-btn');
+  var voiceBtn = document.getElementById('voice-btn');
+  var himBtn = document.getElementById('him-btn');
+  var herBtn = document.getElementById('her-btn');
+  var apiKeyInput = document.getElementById('api-key');
+
+  var aiVoices = { him: 'onyx', her: 'nova' };
+
+  // Web Audio API for stereo panning (AI voices only — browser speechSynthesis can't be panned)
+  var audioCtx = null;
+  var panners = { him: null, her: null };
+  function getAudioCtx() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      panners.him = audioCtx.createStereoPanner();
+      panners.him.pan.value = -0.8;  // left
+      panners.him.connect(audioCtx.destination);
+      panners.her = audioCtx.createStereoPanner();
+      panners.her.pan.value = 0.8;   // right
+      panners.her.connect(audioCtx.destination);
+    }
+    return audioCtx;
+  }
+
+  var browserVoices = {
+    him: { rate: 0.35, pitch: 0.3, voiceName: 'Daniel' },
+    her: { rate: 0.375, pitch: 1.2, voiceName: 'Samantha' }
+  };
+
+  // Browser speech setup
+  var cachedVoices = [];
+  function loadVoices() { cachedVoices = speechSynthesis.getVoices(); }
+  loadVoices();
+  if (speechSynthesis.addEventListener) {
+    speechSynthesis.addEventListener('voiceschanged', loadVoices);
+  }
+
+  var pendingUtterances = 0;
+  function speakBrowser(text, settings) {
+    // Don't queue more than 2 utterances to prevent pile-up
+    if (pendingUtterances >= 2) return;
+    var utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = settings.rate;
+    utterance.pitch = settings.pitch;
+    if (settings.voiceName && cachedVoices.length) {
+      var match = cachedVoices.find(function (v) { return v.name.includes(settings.voiceName); });
+      if (match) utterance.voice = match;
+    }
+    pendingUtterances++;
+    utterance.onend = function () { pendingUtterances--; };
+    utterance.onerror = function () { pendingUtterances--; };
+    speechSynthesis.speak(utterance);
+  }
+
+  function speakAI(text, voice, source) {
+    var ctx = getAudioCtx();
+    if (ctx.state === 'suspended') ctx.resume();
+
+    fetch('https://api.openai.com/v1/audio/speech', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + storedApiKey,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'tts-1',
+        input: text,
+        voice: voice,
+        speed: 0.9
+      })
+    })
+    .then(function (res) {
+      if (!res.ok) {
+        return res.text().then(function (body) {
+          throw new Error('TTS ' + res.status + ': ' + body);
+        });
+      }
+      return res.arrayBuffer();
+    })
+    .then(function (buf) {
+      return ctx.decodeAudioData(buf);
+    })
+    .then(function (decoded) {
+      var src = ctx.createBufferSource();
+      src.buffer = decoded;
+      var panner = panners[source] || panners.him;
+      src.connect(panner);
+      src.start();
+    })
+    .catch(function (err) {
+      console.error('AI speech error:', err.message);
+      // Fall back to browser voice on failure
+      speakBrowser(text, browserVoices[source] || browserVoices.him);
+      // Show dismissable error banner (click to close)
+      var existing = document.getElementById('tts-error');
+      if (existing) existing.remove();
+      var errDiv = document.createElement('div');
+      errDiv.id = 'tts-error';
+      errDiv.style.cssText = 'position:fixed;top:0;left:0;right:0;background:red;color:#fff;padding:8px;font-size:14px;z-index:200;cursor:pointer;';
+      errDiv.textContent = 'TTS Error (click to dismiss, falling back to browser voices): ' + err.message;
+      errDiv.addEventListener('click', function () { errDiv.remove(); });
+      document.body.appendChild(errDiv);
+      // After 3 failures, disable AI and switch to browser voices entirely
+      speakAI.failures = (speakAI.failures || 0) + 1;
+      if (speakAI.failures >= 3) {
+        useAI = false;
+        voiceBtn.textContent = 'switch to AI voices';
+        errDiv.textContent = 'AI TTS failed repeatedly — switched to browser voices. Click toggle to retry.';
+      }
+    });
+  }
+
+  function speak(text, source) {
+    if (!listening) return;
+    if (!hearEnabled[source]) return;
+    var clean = text.replace(/\(/g, ', ...... , ').replace(/\)/g, ' , ...... , ').replace(/\s+/g, ' ').trim();
+    if (!clean) return;
+
+    if (useAI && storedApiKey) {
+      speakAI(clean, aiVoices[source] || 'onyx', source);
+    } else {
+      speakBrowser(clean, browserVoices[source] || browserVoices.him);
+    }
+  }
+
+  window.addEventListener('message', function (e) {
+    if (!e.data || e.data.type !== 'monkeyMindText') return;
+    speak(e.data.text, e.data.source);
+  });
+
+  // Prevent click on input from triggering overlay dismiss
+  apiKeyInput.addEventListener('click', function (e) {
+    e.stopPropagation();
+  });
+
+  // Pre-fill input and show status if key is saved
+  if (storedApiKey) {
+    apiKeyInput.value = storedApiKey;
+    document.getElementById('key-status').textContent = 'Saved key found — click to start';
+  }
+
+  overlay.addEventListener('click', function () {
+    var inputKey = apiKeyInput.value.trim();
+    if (inputKey) {
+      storedApiKey = inputKey;
+      localStorage.setItem('mm_apikey', inputKey);
+    } else {
+      storedApiKey = null;
+      localStorage.removeItem('mm_apikey');
+    }
+    overlay.remove();
+    listening = true;
+    muteBtn.style.display = 'inline';
+    document.querySelectorAll('.char-controls').forEach(function (el) { el.style.display = 'block'; });
+    if (storedApiKey) {
+      voiceBtn.style.display = 'inline';
+      voiceBtn.textContent = 'switch to AI voices';
+    }
+  });
+
+  himBtn.addEventListener('click', function () {
+    hearEnabled.him = !hearEnabled.him;
+    if (!hearEnabled.him) speechSynthesis.cancel();
+    this.textContent = hearEnabled.him ? 'silence him' : 'listen to him';
+  });
+
+  herBtn.addEventListener('click', function () {
+    hearEnabled.her = !hearEnabled.her;
+    if (!hearEnabled.her) speechSynthesis.cancel();
+    this.textContent = hearEnabled.her ? 'silence her' : 'listen to her';
+  });
+
+  voiceBtn.addEventListener('click', function () {
+    useAI = !useAI;
+    speechSynthesis.cancel();
+    speakAI.failures = 0;
+    var existing = document.getElementById('tts-error');
+    if (existing) existing.remove();
+    this.textContent = useAI ? 'switch to browser voices' : 'switch to AI voices';
+  });
+
+  muteBtn.addEventListener('click', function () {
+    listening = !listening;
+    if (!listening) speechSynthesis.cancel();
+    this.textContent = listening ? 'stop listening' : 'start listening';
+  });
+</script>
+</body>
+</html>

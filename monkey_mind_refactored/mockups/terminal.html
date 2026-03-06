@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Monkey Mind — Terminal Mockup</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    color: #888;
+    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+    font-size: 13px;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .header {
+    padding: 16px 24px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .prompt {
+    color: #555;
+  }
+
+  .prompt .cmd { color: #888; }
+
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: #555;
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  .controls {
+    display: flex;
+    gap: 12px;
+  }
+
+  .controls a {
+    color: #444;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .controls a:hover { color: #999; }
+  .controls a.active { color: #777; }
+
+  .stage {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    height: calc(100vh - 48px);
+  }
+
+  .divider {
+    background: #1a1a1a;
+  }
+
+  .panel {
+    position: relative;
+    padding: 20px 24px;
+    overflow: hidden;
+  }
+
+  .panel .bg {
+    position: absolute;
+    inset: 0;
+    background-repeat: no-repeat;
+    background-position: center 5%;
+    background-size: 80% auto;
+    filter: invert(1);
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  .panel.him .bg { background-image: url(../images/him.gif); }
+  .panel.her .bg { background-image: url(../images/her.gif); }
+
+  .panel .label {
+    font-size: 11px;
+    margin-bottom: 16px;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .thoughts {
+    position: relative;
+    z-index: 1;
+    line-height: 2.2;
+  }
+
+  .him .thoughts {
+    color: #3a8;
+  }
+
+  .her .thoughts {
+    color: #5ad;
+  }
+
+  .thoughts div {
+    padding-bottom: 2px;
+  }
+
+  .thoughts .paren {
+    color: #555;
+    font-style: italic;
+  }
+
+  /* Overlay */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    cursor: pointer;
+  }
+
+  .overlay-prompt {
+    color: #444;
+    font-size: 15px;
+  }
+
+  .overlay-prompt .text { color: #666; }
+
+  .overlay:hover .overlay-prompt .text { color: #999; }
+</style>
+</head>
+<body>
+
+<div class="overlay" onclick="this.remove()">
+  <div class="overlay-prompt">
+    <span class="text">&gt; press to begin</span><span class="cursor"></span>
+  </div>
+</div>
+
+<div class="header">
+  <div class="prompt">
+    <span class="cmd">&gt; monkey_mind</span><span class="cursor"></span>
+  </div>
+  <div class="controls">
+    <a class="active">[him:on]</a>
+    <a class="active">[her:on]</a>
+    <a>[mute]</a>
+    <a class="active">[voice:browser]</a>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="panel him">
+    <div class="bg"></div>
+    <div class="label">him // 3500ms</div>
+    <div class="thoughts">
+      <div>you are my silence</div>
+      <div>and she was not my dream</div>
+      <div><span class="paren">(please listen)</span></div>
+      <div>we were my distance or</div>
+      <div>I am your breath</div>
+      <div>we are not our anger</div>
+      <div>therefore he was my map</div>
+      <div>I am not your moth</div>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="panel her">
+    <div class="bg"></div>
+    <div class="label">her // 2000ms</div>
+    <div class="thoughts">
+      <div>I am not your heart</div>
+      <div>we are our freedom but</div>
+      <div>you are completely quiet</div>
+      <div><span class="paren">(I hear you)</span></div>
+      <div>she was my yellow bird</div>
+      <div>therefore I am not forsythia</div>
+      <div>we were not your darkness</div>
+      <div>she was not my meadow or</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

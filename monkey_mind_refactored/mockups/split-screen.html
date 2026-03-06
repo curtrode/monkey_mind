@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Monkey Mind — Split Screen Mockup</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #111;
+    color: #ddd;
+    font-family: system-ui, -apple-system, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    z-index: 10;
+    background: linear-gradient(#111, transparent);
+  }
+
+  .title {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #666;
+  }
+
+  .stage {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    height: calc(100vh - 52px);
+    padding-top: 48px;
+  }
+
+  .divider {
+    background: #2a2a2a;
+  }
+
+  .panel {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .panel .silhouette {
+    position: absolute;
+    inset: 0;
+    background-repeat: no-repeat;
+    background-position: center 5%;
+    background-size: 85% auto;
+    filter: invert(1);
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  .panel.him .silhouette { background-image: url(../images/him.gif); }
+  .panel.her .silhouette { background-image: url(../images/her.gif); }
+
+  .thoughts {
+    position: absolute;
+    top: 18%;
+    left: 18%;
+    right: 18%;
+    font-size: 11pt;
+    line-height: 1.8;
+    color: #eee;
+  }
+
+  .him .thoughts { font-family: Optima, system-ui, sans-serif; }
+  .her .thoughts { font-family: Helvetica Neue, Helvetica, system-ui, sans-serif; }
+
+  .thoughts div { padding-bottom: 8px; }
+
+  /* Toolbar */
+  .toolbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 52px;
+    background: #1a1a1a;
+    border-top: 1px solid #2a2a2a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    z-index: 10;
+  }
+
+  .toolbar button {
+    background: none;
+    border: 1px solid #3a3a3a;
+    border-radius: 20px;
+    color: #888;
+    font-size: 12px;
+    padding: 6px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .toolbar button:hover {
+    border-color: #666;
+    color: #ccc;
+  }
+
+  .toolbar button.him-ctrl { border-color: #553322; color: #a87755; }
+  .toolbar button.him-ctrl:hover { border-color: #a87755; color: #dda977; }
+
+  .toolbar button.her-ctrl { border-color: #223355; color: #5577aa; }
+  .toolbar button.her-ctrl:hover { border-color: #5577aa; color: #77aadd; }
+
+  .toolbar .sep {
+    width: 1px;
+    height: 20px;
+    background: #2a2a2a;
+    margin: 0 4px;
+  }
+
+  /* Overlay */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    cursor: pointer;
+  }
+
+  .overlay-box {
+    border: 1px solid #333;
+    padding: 28px 48px;
+    text-align: center;
+    animation: fadeIn 1s ease;
+  }
+
+  .overlay-box .label {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    color: #999;
+  }
+
+  .overlay-box .sub {
+    font-size: 11px;
+    color: #444;
+    margin-top: 12px;
+    letter-spacing: 1px;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="overlay" onclick="this.remove()">
+  <div class="overlay-box">
+    <div class="label">click to listen</div>
+    <div class="sub">enter an OpenAI key for natural voices</div>
+  </div>
+</div>
+
+<div class="header">
+  <div class="title">Monkey Mind</div>
+</div>
+
+<div class="stage">
+  <div class="panel him">
+    <div class="silhouette"></div>
+    <div class="thoughts">
+      <div>you are my silence</div>
+      <div>and she was not my dream</div>
+      <div>(please listen)</div>
+      <div>we were my distance or</div>
+      <div>I am your breath</div>
+      <div>we are not our anger</div>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="panel her">
+    <div class="silhouette"></div>
+    <div class="thoughts">
+      <div>I am not your heart</div>
+      <div>we are our freedom but</div>
+      <div>you are completely quiet</div>
+      <div>(I hear you)</div>
+      <div>she was my yellow bird</div>
+      <div>therefore I am not forsythia</div>
+    </div>
+  </div>
+</div>
+
+<div class="toolbar">
+  <button class="him-ctrl">silence him</button>
+  <div class="sep"></div>
+  <button>stop listening</button>
+  <button>browser voices</button>
+  <div class="sep"></div>
+  <button class="her-ctrl">silence her</button>
+</div>
+
+</body>
+</html>
