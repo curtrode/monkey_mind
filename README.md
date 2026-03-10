@@ -9,58 +9,6 @@ Inspired by [Nick Montfort](http://nickm.com)'s [Memory Slam](https://nickm.com/
 
 The title references the Buddhist concept of "monkey mind" — restless consciousness swinging from thought to thought. The subtitle, *Too many tabs open*, updates the metaphor.
 
-## Features
-
-- **Dual Generative Voices**: Two independent text generators with distinct word pools and timing
-- **Adjustable Speed**: Click to cycle each voice's interval (1000–7000ms)
-- **Text-to-Speech**: Listen to the generated poetry read aloud
-  - Machine voices (built-in, no setup required)
-  - AI-generated voices (natural-sounding, requires OpenAI API key)
-- **Stereo Panning**: AI voices are spatially positioned — one voice on the left, the other on the right
-- **Individual Muting**: Silence either voice independently — voices start muted, letting text accumulate before listening
-- **Terminal Aesthetic**: Monospace type, dark background, color-coded voices (green/blue)
-
-## Getting Started
-
-1. Open `index.html` in a modern web browser
-2. Click anywhere on the overlay to begin
-3. (Optional) Enter an OpenAI API key for enhanced AI voices
-
-### Voice Options
-
-| Mode | Setup | Quality |
-|------|-------|---------|
-| Machine voices | None required | Synthetic, robotic |
-| Human voices | OpenAI API key | Natural, expressive |
-
-To use human voices, enter your OpenAI API key in the input field before starting. The key is saved locally for future sessions.
-
-## Project Structure
-
-```
-├── index.html              # Main application (combines both voices)
-├── stochastic_thing2.html  # "Him" voice generator
-├── stochastic_thing3.html  # "Her" voice generator
-├── js/
-│   └── monkey-mind.js      # Core stochastic text engine
-├── css/
-│   ├── base.css            # Shared styles
-│   ├── him.css             # "Him" character styling
-│   ├── her.css             # "Her" character styling
-│   ├── presentation.css    # Presentation mode styles
-│   └── text-only.css       # Minimal text-only theme
-├── images/                 # Character background images
-├── archive/                # Experimental/test variants
-│   ├── stochastic_test.html
-│   ├── stochastic_thing3-1.html
-│   ├── stochastic_thing3_use.html
-│   └── stochastic_thing_testfile.html
-└── mockups/                # Alternative visual layouts
-    ├── dark-gallery.html
-    ├── split-screen.html
-    └── terminal.html
-```
-
 ## How It Works
 
 The `MonkeyMind` module generates sentences by randomly combining:
@@ -69,17 +17,44 @@ The `MonkeyMind` module generates sentences by randomly combining:
 - **Predicates**: Abstract nouns ("silence", "dream", "darkness", "freedom") and pastoral imagery ("horses", "meadow", "yellow bird")
 - **Conjunctions**: Connectors with parenthetical asides ("and", "but", "(please listen)")
 
-Each voice has its own word pool and interval timing, creating an organic, overlapping conversation effect.
+Each voice has its own word pool and interval timing, creating an organic, overlapping conversation effect. The piece uses a terminal-style interface with text-to-speech narration in both synthetic machine and AI-generated human voices. Voices begin muted; the viewer chooses when to listen, which voices to activate, and how quickly each voice processes its anxieties.
 
 ## Roadmap
-
-- **Flexible gender pairings**: Allow any combination of voices — him/him, her/her, him/they, they/her, they/they, etc. Moving beyond the current fixed him/her duet to support a wider range of identity and relationship dynamics.
-
-- **Richer language**: New sentence templates will introduce declarations, questions, negation contrasts, and direct address, expanding the grammar-based generation at the heart of this tradition.
 
 - **Real-time responsiveness**: The voices currently generate independently. The next phase will expand the dialogic features so that unmuted stochastic voices begin to respond to one another under certain conditions — echoing, mirroring, or inverting each other's words. The central question: is it even possible to carry the stochastic nature of the original into something truly dialogic, in real time?
 
 - **Emotional arc**: AI-generated texts will traverse registers of nostalgia, tension, anger, defensiveness, and reconnection — without guaranteeing resolution.
+
+- **Flexible gender identity**: The fixed "him" and "her" pairing will expand to support more combinations — him/him, her/they, they/they — exploring a wider range of relationship dynamics.
+
+- **Richer language**: New sentence templates will introduce declarations, questions, negation contrasts, and direct address, expanding the grammar-based generation at the heart of this tradition.
+
+## Project Structure
+
+```
+├── index.html              # Main application (combines both voices)
+├── excerpt.html            # Work-in-progress excerpt (printable)
+├── stochastic_thing2.html  # "Him" voice generator
+├── stochastic_thing3.html  # "Her" voice generator
+├── js/
+│   └── monkey-mind.js      # Core stochastic text engine
+├── css/
+│   ├── base.css            # Shared styles
+│   ├── him.css             # "Him" character styling
+│   └── her.css             # "Her" character styling
+└── archive/                # Earlier iterations and visual mockups
+```
+
+## Running the Piece
+
+1. Open `index.html` in a modern browser
+2. Click anywhere on the overlay to begin
+3. (Optional) Enter an OpenAI API key for AI-generated voices
+
+| Voice Mode | Setup | Quality |
+|------------|-------|---------|
+| Machine voices | None required | Synthetic, robotic |
+| AI voices | OpenAI API key | Natural, expressive |
 
 ## Credits
 
@@ -88,26 +63,4 @@ Each voice has its own word pool and interval timing, creating an organic, overl
 
 ## License
 
-```
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
-SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
-IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-```
-
-## Browser Compatibility
-
-Requires a modern browser with:
-- ES6 JavaScript support
-- Web Speech API (for browser voices)
-- Web Audio API (for AI voice stereo panning)
-- Fetch API (for OpenAI TTS)
-
-Tested in Chrome, Firefox, Safari, and Edge.
+ISC License — see [LICENSE](LICENSE).
