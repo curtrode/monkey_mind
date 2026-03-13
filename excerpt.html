@@ -273,36 +273,39 @@
   <div class="back-link"><a href="index.html">&larr; back to piece</a></div>
 
   <h1><em>Monkey Mind</em></h1>
-  <div class="subtitle">Too many tabs open — a stochastic duet<br>Curt Rode</div>
+  <div class="subtitle">Too many tabs open — from stochastic duet to improvisation<br>Curt Rode</div>
 
   <h2>About This Work-in-Progress Excerpt</h2>
 
   <p>
-    <em>Monkey Mind</em> is an interactive electronic literature piece in which two voices generate text simultaneously, assembling phrases from overlapping but distinct word pools. Each voice combines relational subjects (<em>"you are my," "I am not your," "we were our"</em>) with abstract and pastoral predicates (<em>"silence," "horses," "yellow bird," "darkness"</em>), producing a continuous stream of stochastic language that evokes two minds thinking past each other.
+    <em>Monkey Mind</em> is an evolving electronic literature project that begins as a stochastic duet and moves toward improvisational response. In its current two-voice form, the piece presents parallel streams of generated text assembled from overlapping but distinct word pools. Each voice combines relational subjects (<em>"you are my," "I am not your," "we were our"</em>) with abstract and pastoral predicates (<em>"silence," "horses," "yellow bird," "darkness"</em>), producing a continuous texture of intimacy, negation, and silence.
   </p>
 
   <p>
-    The piece runs in a browser with a terminal-style interface and can be experienced live at <a href="https://curtrode.github.io/monkey_mind/">curtrode.github.io/monkey_mind</a>. The voices begin muted; the viewer chooses when — and whether — to listen. Text-to-speech narration uses both synthetic machine and AI-generated voices; in the AI mode, the two voices are spatialized in stereo, one left and one right. Enabling speech transforms parallel monologues into something closer to dialogue, making the listener complicit in bridging two minds.
+    The project runs in a browser with a terminal-style interface and can be experienced live in two forms: the duet at <a href="https://curtrode.github.io/monkey_mind/">curtrode.github.io/monkey_mind</a> and the improvisation prototype at <a href="https://curtrode.github.io/monkey_mind/openAI-improv.html">curtrode.github.io/monkey_mind/openAI-improv.html</a>. In the duet, the voices begin muted; the viewer chooses when — and whether — to listen. Text-to-speech narration uses both synthetic machine and AI-generated voices; in AI mode, the two voices are spatialized in stereo, one left and one right.
   </p>
 
   <p>
-    The work is built on Nick Montfort's Memory Slam — a collection of stochastic text engines reimplementing classics like Christopher Strachey's <em>Love Letters</em> (1952) and Alison Knowles & James Tenney's <em>A House of Dust</em> (1967). Where those foundational works operate as poetic monologues, <em>Monkey Mind</em> attempts to carry stochastic generation into dialogue.
+    The work begins in Nick Montfort's Memory Slam lineage — a collection of stochastic text engines reimplementing classics like Christopher Strachey's <em>Love Letters</em> (1952) and Alison Knowles &amp; James Tenney's <em>A House of Dust</em> (1967). Where those foundational works operate as poetic monologues, <em>Monkey Mind</em> starts by carrying stochastic generation into dialogue and now extends that lineage further through a transition from combinatory generation to improvisational response.
   </p>
 
   <p>
-    What follows is the core generative source of the piece: the generation engine, the word pools that constitute its vocabulary, and a sample of the output it produces. The full project, including interface and speech logic, is available at <a href="https://github.com/curtrode/monkey_mind">github.com/curtrode/monkey_mind</a>. In computational writing, the code <em>is</em> the writing — the literary decisions are embedded in the choice of words, the sentence templates, the timing, and the silences.
+    What follows documents the stochastic engine and duet structure from which the larger project evolves: the generation logic, the word pools that constitute its vocabulary, and a sample of the language it produces. The full project, including interface, speech logic, and the live improvisation prototype, is available at <a href="https://github.com/curtrode/monkey_mind">github.com/curtrode/monkey_mind</a>. In computational writing, the code <em>is</em> the writing — the literary decisions are embedded in the choice of words, the sentence templates, the timing, the transitions, and the silences.
   </p>
 
   <h2>How to Read This</h2>
 
   <p>
-    <strong>The Engine</strong> (p. 2–3) shows the generation logic — how subjects, predicates, and conjunctions are combined. Note the simplicity: a single function assembles each phrase.
+    <strong>The Engine</strong> (p. 2–3) shows the stochastic generation logic — how subjects, predicates, and conjunctions are combined. Note the simplicity: a single function assembles each phrase.
   </p>
   <p>
-    <strong>The Word Pools</strong> (p. 4–7) are the poem's raw material. Two voices share most vocabulary but diverge in small, deliberate ways. Empty strings in the arrays are intentional — they create gaps, half-sentences, silence.
+    <strong>The Word Pools</strong> (p. 4–7) are the duet's raw material. Two voices share most vocabulary but diverge in small, deliberate ways. Empty strings in the arrays are intentional — they create gaps, half-sentences, silence.
   </p>
   <p>
-    <strong>Sample Output</strong> (p. 8–10) captures both voices running simultaneously, as they would appear in the terminal interface.
+    <strong>Sample Output</strong> (p. 8–9) captures the two-voice stochastic stage as it appears in the terminal interface.
+  </p>
+  <p>
+    <strong>Improvisation Prototype</strong> (p. 10) The live monologue version extends this same vocabulary and interface into a staged drift from stochastic generation to LLM-driven improvisation.
   </p>
 
   <span class="page-num">1</span>
@@ -773,54 +776,40 @@
 
 <div class="page page-break">
 
+  <h2>Improvisation Prototype</h2>
+
+  <p>
+    The improvisation prototype stages the transition that the stochastic engine cannot make on its own. A single voice runs the same combinatory grammar shown above, accumulating approximately twenty lines of stochastic output. That accumulated language is then fed as context to an LLM, which takes over generation in three phases:
+  </p>
+
+  <p style="margin-left: 0.2in;">
+    <strong>Echo</strong> &mdash; The LLM continues generating in the stochastic style: same word pools, same two-clause structure, same parenthetical asides. It is still the engine, just continuing.<br><br>
+    <strong>Bend</strong> &mdash; The grammar loosens. New words enter. Fragments lengthen. The LLM may ask a question, let a parenthetical aside become the whole line, or reference something it said earlier. Something like intention is emerging.<br><br>
+    <strong>Drift</strong> &mdash; Free improvisation. The original vocabulary and rhythms are still present as memory, but the voice is going somewhere new &mdash; naming specific places, contradicting earlier lines, finding language for things the stochastic engine could not say.
+  </p>
+
+  <p>
+    The voice itself shifts with the language. During the stochastic phase, a synthetic machine voice speaks the lines. As the LLM takes over, an AI-generated voice replaces it. The transition is not just visible on screen but audible &mdash; mechanical speech giving way to something that sounds like a person trying to reach someone.
+  </p>
+
+  <p>
+    Below is a sample of drift-phase output from one run of the prototype. Each performance produces different language.
+  </p>
+
   <div class="output-container">
-    <div class="output-stage">
-      <div class="output-voice voice-him">
-        I am your darkness therefore you are my silence<br>
-        <br>
-        we were my meadow and she was not my breath<br>
-        <br>
-        &nbsp;&nbsp;heart (please listen) he was my strength<br>
-        <br>
-        you are not my horses or we are our novelty<br>
-        <br>
-        she was your dream but I am not your anger<br>
-        <br>
-        &nbsp;&nbsp;age (please don't) we were not my freedom<br>
-        <br>
-        he was not my distance and you are my yellow bird<br>
-        <br>
-        we are not our gift (I hear you) she was my expense
-      </div>
-      <div class="output-divider"></div>
-      <div class="output-voice voice-her">
-        she was my wrong or you are my heart<br>
-        <br>
-        &nbsp;&nbsp;right but I am not&nbsp;&nbsp;darkness<br>
-        <br>
-        we are our forsythia therefore he was not my breath<br>
-        <br>
-        you are completely silence (please listen) she was not my dream<br>
-        <br>
-        I am your meadow and we were my horses<br>
-        <br>
-        &nbsp;&nbsp;road (I hear you) you are not my anger<br>
-        <br>
-        we were not your freedom or&nbsp;&nbsp;moth<br>
-        <br>
-        she was your gift but I am not your yellow bird<br>
-        <br>
-        he was my quiet (please don't) we are not our expense<br>
-        <br>
-        you are my distance therefore&nbsp;&nbsp;supply<br>
-        <br>
-        &nbsp;&nbsp;value and I am not&nbsp;&nbsp;age
-      </div>
+    <div class="output-voice" style="color: #9bd; padding: 12pt 16pt; line-height: 2.2;">
+      there was a field where I practiced saying your name to no one<br>
+      the forsythia opened anyway<br>
+      (please listen) I kept the silence like a drawer of letters I revised but never sent<br>
+      we were our own distance and I mistook it for a meadow<br>
+      you are not my quiet anymore &mdash; you are the sound the house makes when it settles<br>
+      I have memorized the roads that lead away<br>
+      (I hear you) I have always heard you
     </div>
   </div>
 
-  <p style="margin-top: 16pt; font-size: 10pt; color: #666; text-align: center; font-style: italic;">
-    Each run unfolds differently, even though individual phrases and lines can repeat.
+  <p style="margin-top: 12pt; font-size: 10pt; color: #666;">
+    The live prototype can be experienced at <a href="https://curtrode.github.io/monkey_mind/openAI-improv.html" style="color: #888; border-bottom: 1px solid #ccc;">curtrode.github.io/monkey_mind/openAI-improv.html</a> (requires an OpenAI API key; a video recording is also available).
   </p>
 
   <span class="page-num">10</span>
