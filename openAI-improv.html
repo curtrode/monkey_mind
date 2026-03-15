@@ -225,7 +225,7 @@
   <div class="overlay-top">
     <div class="overlay-info">
       <h1 class="overlay-title">MONKEY MIND</h1>
-      <p class="overlay-subtitle">improvisation</p>
+      <p class="overlay-subtitle">Yes, and...</p>
       <p class="overlay-desc">
         A single voice generates stochastic text &mdash; assembling phrases
         from the language of intimacy, possession, and silence.
@@ -255,8 +255,10 @@
   <nav class="controls" aria-label="Controls">
     <span id="phase-display" class="phase-tag stochastic">[stochastic]</span>
     <button id="advance-btn" aria-label="Advance phase">[advance]</button>
-    <button id="mute-btn" aria-label="Toggle listening">[mute]</button>
+    <button id="pause-btn" aria-label="Pause">[pause]</button>
+    <button id="mute-btn" aria-label="Toggle listening">[listen]</button>
     <button id="auto-btn" aria-label="Toggle auto-advance">[auto:off]</button>
+    <button id="print-btn" aria-label="Print session">[print]</button>
   </nav>
 </header>
 
@@ -312,13 +314,17 @@
   var listening = false;
   var autoAdvance = false;
   var generating = false;
+  var paused = false;
+  var phaseLog = []; // tracks phase for each line: { text, phase }
 
   // ── DOM ──
   var mainEl = document.getElementById('main');
   var phaseDisplay = document.getElementById('phase-display');
   var advanceBtn = document.getElementById('advance-btn');
+  var pauseBtn = document.getElementById('pause-btn');
   var muteBtn = document.getElementById('mute-btn');
   var autoBtn = document.getElementById('auto-btn');
+  var printBtn = document.getElementById('print-btn');
   var overlay = document.getElementById('overlay');
   var apiKeyInput = document.getElementById('api-key');
 
@@ -348,6 +354,7 @@
     var div = document.createElement('div');
     div.className = 'line-' + phaseClass;
     div.textContent = text;
+    phaseLog.push({ text: text.trim(), phase: phaseClass });
     mainEl.appendChild(div);
 
     div.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -620,7 +627,7 @@
   muteBtn.addEventListener('click', function () {
     listening = !listening;
     if (!listening) speechSynthesis.cancel();
-    muteBtn.textContent = listening ? '[listening]' : '[mute]';
+    muteBtn.textContent = listening ? '[mute]' : '[listen]';
   });
 
   autoBtn.addEventListener('click', function () {
@@ -628,18 +635,66 @@
     autoBtn.textContent = autoAdvance ? '[auto:on]' : '[auto:off]';
   });
 
+  pauseBtn.addEventListener('click', function () {
+    if (!paused) {
+      clearTimeout(stochasticTimer);
+      clearTimeout(improvTimer);
+      speechSynthesis.cancel();
+      paused = true;
+      pauseBtn.textContent = '[resume]';
+    } else {
+      paused = false;
+      pauseBtn.textContent = '[pause]';
+      if (phase === 'stochastic') {
+        runStochastic();
+      } else {
+        runImprovLine();
+      }
+    }
+  });
+
+  printBtn.addEventListener('click', function () {
+    if (phaseLog.length === 0) return;
+    var colors = { stochastic: '#5a7', echo: '#6b9', bend: '#7cb', drift: '#9bd' };
+    var html = '<!DOCTYPE html><html><head><title>Monkey Mind — Session</title>' +
+      '<style>' +
+      'body { background: #0a0a0a; color: #888; font-family: "SF Mono","Menlo","Monaco","Consolas",monospace; font-size: 13px; padding: 48px; max-width: 640px; line-height: 2.2; }' +
+      'h1 { color: #999; font-size: 20px; font-weight: normal; letter-spacing: 4px; margin-bottom: 4px; }' +
+      '.subtitle { font-style: italic; color: #5a7; margin-bottom: 32px; font-size: 13px; }' +
+      '.phase-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-top: 24px; margin-bottom: 8px; }' +
+      '@media print { body { background: #fff; color: #222; } .phase-label { color: #666 !important; } div.line { color: #222 !important; } }' +
+      '</style></head><body>' +
+      '<h1>MONKEY MIND</h1><div class="subtitle">improvisation — session transcript</div>';
+    var currentPhase = null;
+    phaseLog.forEach(function (entry) {
+      if (entry.phase !== currentPhase) {
+        currentPhase = entry.phase;
+        html += '<div class="phase-label" style="color:' + colors[currentPhase] + '">[' + currentPhase + ']</div>';
+      }
+      html += '<div class="line" style="color:' + colors[entry.phase] + '">' +
+        entry.text.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</div>';
+    });
+    html += '</body></html>';
+    var w = window.open('', '_blank');
+    w.document.write(html);
+    w.document.close();
+  });
+
   document.querySelector('.cmd').addEventListener('click', function () {
     clearTimeout(stochasticTimer);
     clearTimeout(improvTimer);
     listening = false;
     speechSynthesis.cancel();
-    muteBtn.textContent = '[mute]';
+    muteBtn.textContent = '[listen]';
 
     phase = 'stochastic';
     contextBuffer = [];
+    phaseLog = [];
     lineCount = 0;
     totalLines = 0;
     generating = false;
+    paused = false;
+    pauseBtn.textContent = '[pause]';
     mainEl.innerHTML = '';
     advanceBtn.style.display = '';
     updatePhaseDisplay();
