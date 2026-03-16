@@ -34,8 +34,6 @@ The improvisation prototype (`openAI-improv.html`) demonstrates the single-voice
 ├── openAI-improv.html      # Improvisation prototype (single voice, OpenAI)
 ├── portfolio.html          # Portfolio — work-in-progress excerpt (8-page printable)
 ├── monkey_mind_session_transcript.pdf  # Improv session transcript
-├── stochastic_thing2.html  # "Him" voice generator (standalone)
-├── stochastic_thing3.html  # "Her" voice generator (standalone)
 ├── js/
 │   └── monkey-mind.js      # Core stochastic text engine
 ├── css/

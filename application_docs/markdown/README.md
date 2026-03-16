@@ -6,8 +6,6 @@ This folder is the Word-free source for application documents.
 - `proposal.md`: editable source text for the Banff proposal
 - `cover_letter.md`: original cover letter draft
 - `cover_letter_3-15-26.md`: current cover letter (voice-matched redraft)
-- `cover_letter_revision_suggestions.md`: revision notes and interview Q&A
-- `claude_cover_letter_redraft_prompt.md`: prompt used to generate the redraft
 - `portfolio-docs.css`: shared print styling aligned to the portfolio visual language
 - `proposal-header.css`: extends base styles with "Curt Rode | March 2026" header
 - `render_pdf.sh`: render script using `pandoc` + `weasyprint`
