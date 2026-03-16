@@ -25,7 +25,7 @@ Each voice has its own word pool and interval timing, creating an organic, overl
 
 ## Development
 
-The improvisation prototype (`openAI-improv.html`) demonstrates the single-voice transition from stochastic generation through the three drift phases. The next stage of development — proposed for a residency at the Banff Centre for Arts and Creativity (September 2026) — expands the monologue into a multi-model dialogue: each voice driven by a different LLM, each with genuinely different tendencies and ways of interpreting the same emotional territory. The author's role becomes that of a director, shaping each model-voice through system prompts that play with or against its natural grain.
+The improvisation prototype (`openAI-improv.html`) demonstrates the single-voice transition from stochastic generation through three phases: echo, bend, and drift. The next stage of development — proposed for a residency at the Banff Centre for Arts and Creativity (September 2026) — expands the monologue into a multi-model dialogue: each voice driven by a different LLM, each with genuinely different tendencies and ways of interpreting the same emotional territory. The author's role becomes that of a director, shaping each model-voice through system prompts that play with or against its natural grain.
 
 ## Project Structure
 
